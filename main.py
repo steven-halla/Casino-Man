@@ -77,22 +77,44 @@ while running:
         if current_color == (0, 0, 255):  # If the rectangle is blue
             next_color_time = time.time() + 3  # Set the time for the next color change to 3 seconds
         else:
-            next_color_time = time.time() + 5  # Set the time for the next color change to 5 seconds
+            next_color_time = time.time() + 2  # Set the time for the next color change to 5 seconds
 
     # Movement Logic
     direction = directions[current_direction_index]
+    current_color = blue_rect.image.get_at((0, 0))
+
     if direction == 'up':
         if blue_rect.rect.top > 0:
-            blue_rect.rect.y -= speed
+            if current_color == (0,0,255):
+                print("Duck you")
+                blue_rect.rect.y -= speed
+            else:
+                blue_rect.rect.y -= 0
+                print("Luck you")
     elif direction == 'down':
         if blue_rect.rect.bottom < screen_height:
-            blue_rect.rect.y += speed
+            if current_color == (0, 0, 255):
+                print("Duck you")
+                blue_rect.rect.y += speed
+            else:
+                blue_rect.rect.y += 0
+                print("Luck you")
     elif direction == 'left':
         if blue_rect.rect.left > 0:
-            blue_rect.rect.x -= speed
+            if current_color == (0, 0, 255):
+                print("Duck you")
+                blue_rect.rect.x -= speed
+            else:
+                blue_rect.rect.x -= 0
+                print("Luck you")
     elif direction == 'right':
         if blue_rect.rect.right < screen_width:
-            blue_rect.rect.x += speed
+            if current_color == (0, 0, 255):
+                print("Duck you")
+                blue_rect.rect.x += speed
+            else:
+                blue_rect.rect.x += 0
+                print("Luck you")
 
 
 
