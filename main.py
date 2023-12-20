@@ -74,8 +74,10 @@ while running:
 
         # Randomly choose the next direction
         current_direction_index = random.randint(0, len(directions) - 1)
-
-        next_color_time = time.time() + 3  # Set the time for the next color change
+        if current_color == (0, 0, 255):  # If the rectangle is blue
+            next_color_time = time.time() + 3  # Set the time for the next color change to 3 seconds
+        else:
+            next_color_time = time.time() + 5  # Set the time for the next color change to 5 seconds
 
     # Movement Logic
     direction = directions[current_direction_index]
