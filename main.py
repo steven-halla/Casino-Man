@@ -1,5 +1,7 @@
 import pygame
 from Game.rectanglesprite import RectangleSprite
+import random
+
 
 from Game.game_control import GameControl
 
@@ -50,6 +52,7 @@ while running:
             (0, 255, 0))  # Change to green if within LOS and above
     else:
         red_rect.change_color((255, 0, 0))
+
 
 
         # Check for key presses and delegate to game control

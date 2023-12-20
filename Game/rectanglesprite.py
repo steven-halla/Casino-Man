@@ -1,11 +1,18 @@
 import pygame
 
 class RectangleSprite(pygame.sprite.Sprite):
-    def __init__(self, color, width, height):
+    # def __init__(self, color, width, height):
+    #     super().__init__()
+    #     self.image = pygame.Surface([width, height])
+    #     self.image.fill(color)
+    #     self.rect = self.image.get_rect()
+
+    def __init__(self, color, width, height, speed=5):
         super().__init__()
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
         self.rect = self.image.get_rect()
+        self.speed = speed  #
 
     def move(self, dx, dy, barriers, screen_width, screen_height):
         # Move each axis separately and check for collisions
@@ -13,6 +20,9 @@ class RectangleSprite(pygame.sprite.Sprite):
         self.collide(dx, 0, barriers)
         self.rect.y += dy
         self.collide(0, dy, barriers)
+
+        if dx == 0 and dy == 0:
+            return
 
         # Check for screen boundaries
         if self.rect.right > screen_width:
@@ -39,3 +49,6 @@ class RectangleSprite(pygame.sprite.Sprite):
 
     def change_color(self, new_color):
         self.image.fill(new_color)
+
+    def change_direction(self, new_direction):
+        self.direction = new_direction
