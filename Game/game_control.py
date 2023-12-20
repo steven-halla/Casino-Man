@@ -9,6 +9,8 @@ class GameControl:
         self.screen_height = screen_height
         self.speed = speed
 
+
+
     def handle_keys(self, keys):
         dx, dy = 0, 0
         if keys[pygame.K_LEFT]:
