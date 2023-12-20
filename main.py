@@ -1,16 +1,10 @@
 import pygame
 from Game.rectanglesprite import RectangleSprite
 
-# ... rest of your main.py code ...
-
-
-# ... rest of your main.py code ...
+from Game.game_control import GameControl
 
 
 
-# Define a Rectangle class that inherits from pygame.sprite.Sprite
-
-# Initialize Pygame
 pygame.init()
 
 screen_width = 800
@@ -36,6 +30,9 @@ all_sprites.add(blue_rect)
 # Speed of movement
 speed = 1
 
+
+game_control = GameControl(red_rect, blue_rect, screen_width, screen_height, speed)
+
 # Main game loop
 running = True
 while running:
@@ -43,22 +40,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Reset movement direction
-    dx, dy = 0, 0
+    blue_los_left = blue_rect.rect.left
+    blue_los_right = blue_rect.rect.right
+    blue_los_top = blue_rect.rect.top
 
-    # Check for key presses and set movement direction
+    # Check if the red rectangle is within the LOS area and above the blue rectangle
+    if blue_los_left < red_rect.rect.centerx < blue_los_right and red_rect.rect.bottom < blue_los_top:
+        red_rect.change_color(
+            (0, 255, 0))  # Change to green if within LOS and above
+    else:
+        red_rect.change_color((255, 0, 0))
+
+
+        # Check for key presses and delegate to game control
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        dx = -speed
-    if keys[pygame.K_RIGHT]:
-        dx = speed
-    if keys[pygame.K_UP]:
-        dy = -speed
-    if keys[pygame.K_DOWN]:
-        dy = speed
-
-    # Move the red rectangle and handle collisions with the blue rectangle and screen boundaries
-    red_rect.move(dx, dy, [blue_rect], screen_width, screen_height)
+    game_control.handle_keys(keys)
 
     # Update sprites
     all_sprites.update()

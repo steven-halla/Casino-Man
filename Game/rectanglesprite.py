@@ -36,3 +36,6 @@ class RectangleSprite(pygame.sprite.Sprite):
                     self.rect.bottom = barrier.rect.top
                 if dy < 0:  # Moving up; hit the bottom side of the barrier
                     self.rect.top = barrier.rect.bottom
+
+    def change_color(self, new_color):
+        self.image.fill(new_color)
