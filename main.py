@@ -41,21 +41,44 @@ all_sprites.add(blue_rect)
 # Speed of movement
 speed = 5
 
+colors = ["blue", "purple"]
+color_index = 0
+next_color_time = time.time() + 3
 
 game_control = GameControl(red_rect, blue_rect, screen_width, screen_height, speed)
 clock = pygame.time.Clock()
+start_time = time.time()  # Get the start time
 
 # Main game loop
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+
             running = False
 
-    if blue_movement > 0 and (time.time() - last_move_time) > movement_interval:
-        blue_rect.rect.y -= speed  # Move up by the global speed
-        blue_movement -= speed  # Decrement the remaining movement distance
-        last_move_time = time.time()
+
+
+    elapsed_time = time.time() - start_time
+
+    # Check if it's time to switch colors
+    if time.time() >= next_color_time:
+        color_index = (color_index + 1) % len(
+            colors)  # Toggle between "blue" and "purple"
+        current_color = colors[color_index]
+        print(current_color)
+
+        # Set the time for the next color change
+        next_color_time = time.time() + 3
+
+
+
+
+
+
+            # Your game loop code here (replace this comment with your game loop logic)
+
+            # Limit the loop's execution speed, e.g., to avoid high CPU usage
 
         # Check for key presses and delegate to game control
     keys = pygame.key.get_pressed()
