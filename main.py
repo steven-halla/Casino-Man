@@ -39,7 +39,9 @@ all_sprites.add(red_rect)
 all_sprites.add(blue_rect)
 
 # Speed of movement
-speed = 5
+speed = 3
+stop_speed = 0
+
 
 colors = ["blue", "purple"]
 color_index = 0
@@ -48,29 +50,47 @@ next_color_time = time.time() + 3
 game_control = GameControl(red_rect, blue_rect, screen_width, screen_height, speed)
 clock = pygame.time.Clock()
 start_time = time.time()  # Get the start time
+directions = ['up', 'down', 'left', 'right']
+current_direction_index = 0  # Start with the first direction in the array
 
 # Main game loop
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-
             running = False
-
-
 
     elapsed_time = time.time() - start_time
 
     # Check if it's time to switch colors
     if time.time() >= next_color_time:
-        color_index = (color_index + 1) % len(
-            colors)  # Toggle between "blue" and "purple"
-        current_color = colors[color_index]
-        print(current_color)
+        print("hi")
 
-        # Set the time for the next color change
-        next_color_time = time.time() + 3
+        current_color = blue_rect.image.get_at((0, 0))
+        if current_color == (0, 0, 255, 255):  # If the rectangle is blue
+            blue_rect.change_color((128, 0, 128))  # Change it to purple
+        else:
+            blue_rect.change_color((0, 0, 255))  # Change it back to blue
 
+        # Randomly choose the next direction
+        current_direction_index = random.randint(0, len(directions) - 1)
+
+        next_color_time = time.time() + 3  # Set the time for the next color change
+
+    # Movement Logic
+    direction = directions[current_direction_index]
+    if direction == 'up':
+        if blue_rect.rect.top > 0:
+            blue_rect.rect.y -= speed
+    elif direction == 'down':
+        if blue_rect.rect.bottom < screen_height:
+            blue_rect.rect.y += speed
+    elif direction == 'left':
+        if blue_rect.rect.left > 0:
+            blue_rect.rect.x -= speed
+    elif direction == 'right':
+        if blue_rect.rect.right < screen_width:
+            blue_rect.rect.x += speed
 
 
 
