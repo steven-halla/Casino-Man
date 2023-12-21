@@ -66,12 +66,23 @@ clock = pygame.time.Clock()
 start_time = time.time()  # Get the start time
 directions = ['up', 'down', 'left', 'right']
 current_direction_index = 0  # Start with the first direction in the array
+loop_counter = 0
 
 # Main game loop
 running = True
 while running:
-    barriers = [pink_rect]
     dx, dy = 0, 0
+    current_time = time.time()  # Get the current time in seconds
+
+    elapsed_time = current_time - start_time  # Calculate elapsed time
+
+    loop_counter += 1  # Increment the counter
+
+    # ... [rest of your game loop code] ...
+    # print(f"Loop {loop_counter} at {elapsed_time:.2f} seconds: Blue Rect Pos: ({blue_rect.rect.x}, {blue_rect.rect.y}), dx: {dx}, dy: {dy}")
+
+
+    barriers = [pink_rect]
 
 
     for event in pygame.event.get():
@@ -103,76 +114,136 @@ while running:
 
     if direction == 'up':
         if blue_rect.rect.top > 0:
+            dx = 0  # No horizontal movement
+            dy = -speed / 2  # Move up at half the speed
+
+            # Move the blue rectangle
+            blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
+            # Collision logic with pink_rect
+            if blue_rect.rect.colliderect(pink_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.top = pink_rect.rect.bottom
+
+            # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly above the blue rectangle
-                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 10:  # Adjust the threshold as needed
-                    if red_rect.rect.bottom < blue_rect.rect.top:  # Check if red is above blue
-                        # Change the color of the red rectangle to green
+                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 40:
+                    if red_rect.rect.bottom < blue_rect.rect.top:
                         red_rect.change_color((0, 255, 0))  # Change to green
                         print("Changed red to green")
                     else:
                         print("No LOS")
                 else:
                     print("No LOS")
-            blue_rect.rect.y -= speed
         else:
             print("Luck you")
+
+
 
 
 
 
     elif direction == 'down':
         if blue_rect.rect.bottom < screen_height:
+            dx = 0  # No horizontal movement
+            dy = speed / 3  # Move down
+
+            # Move the blue rectangle
+            blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
+            # Collision logic with pink_rect
+            if blue_rect.rect.colliderect(pink_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.bottom = pink_rect.rect.top
+
+            # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly below the blue rectangle
-                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 10:  # Adjust the threshold as needed
-                    if red_rect.rect.top > blue_rect.rect.bottom:  # Check if red is below blue
-                        # Change the color of the red rectangle to green
+                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 40:
+                    if red_rect.rect.top > blue_rect.rect.bottom:
                         red_rect.change_color((0, 255, 0))  # Change to green
                         print("Changed red to green")
                     else:
                         print("No LOS")
                 else:
                     print("No LOS")
-            blue_rect.rect.y += speed  # Allowing the blue rectangle to move down
         else:
             print("Luck you")
+
+
+
 
 
     elif direction == 'left':
         if blue_rect.rect.left > 0:
+            dx = -speed / 2 # Move left
+            dy = 0  # No vertical movement
+
+            # Move the blue rectangle
+            blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
+            # Collision logic with pink_rect
+            if blue_rect.rect.colliderect(pink_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.left = pink_rect.rect.right
+
+            # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly to the left of the blue rectangle
-                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 10:  # Adjust the threshold as needed
-                    if red_rect.rect.right < blue_rect.rect.left:  # Check if red is to the left of blue
-                        # Change the color of the red rectangle to green
+                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 40:
+                    if red_rect.rect.right < blue_rect.rect.left:
                         red_rect.change_color((0, 255, 0))  # Change to green
                         print("Changed red to green")
                     else:
                         print("No LOS")
                 else:
                     print("No LOS")
-            blue_rect.rect.x -= speed  # Allowing the blue rectangle to move left
         else:
             print("Luck you")
 
+
     elif direction == 'right':
         if blue_rect.rect.right < screen_width:
+            dx = speed / 3 # Move right
+            dy = 0  # No vertical movement
+
+            # Move the blue rectangle
+            blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
+            # Collision logic with pink_rect
+            if blue_rect.rect.colliderect(pink_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.right = pink_rect.rect.left
+
+            # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly to the right of the blue rectangle
-                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 10:  # Adjust the threshold to 10 pixels
-                    if red_rect.rect.left > blue_rect.rect.right:  # Check if red is to the right of blue
-                        # Change the color of the red rectangle to green
-                        red_rect.change_color(
-                            (0, 255, 0))  # Change to green
+                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 40:
+                    if red_rect.rect.left > blue_rect.rect.right:
+                        red_rect.change_color((0, 255, 0))  # Change to green
                         print("Changed red to green")
                     else:
                         print("No LOS")
                 else:
                     print("No LOS")
-            blue_rect.rect.x += speed  # Allowing the blue rectangle to move right
         else:
             print("Luck you")
+
+    #
+    # if direction == 'up':
+    #     dy = -speed
+    # elif direction == 'down':
+    #     dy = speed
+    # elif direction == 'left':
+    #     dx = -speed
+    # elif direction == 'right':
+    #     dx = speed
+
+        # Move the blue rectangle
+    blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
+    # Reset dx and dy for the next loop iteration
 
             # Your game loop code here (replace this comment with your game loop logic)
 
