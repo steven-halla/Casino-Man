@@ -85,40 +85,76 @@ while running:
 
     if direction == 'up':
         if blue_rect.rect.top > 0:
-            if current_color == (0,0,255):
-                print("Duck you")
-                blue_rect.rect.y -= speed
-            else:
-                blue_rect.rect.y -= 0
-                print("Luck you")
+            if current_color == (0, 0, 255):  # If the rectangle is blue
+                # Check if the red rectangle is directly above the blue rectangle
+                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 10:  # Adjust the threshold as needed
+                    if red_rect.rect.bottom < blue_rect.rect.top:  # Check if red is above blue
+                        # Change the color of the red rectangle to green
+                        red_rect.change_color((0, 255, 0))  # Change to green
+                        print("Changed red to green")
+                    else:
+                        print("No LOS")
+                else:
+                    print("No LOS")
+            blue_rect.rect.y -= speed
+        else:
+            print("Luck you")
+
+
+
+
     elif direction == 'down':
         if blue_rect.rect.bottom < screen_height:
-            if current_color == (0, 0, 255):
-                print("Duck you")
-                blue_rect.rect.y += speed
-            else:
-                blue_rect.rect.y += 0
-                print("Luck you")
+            if current_color == (0, 0, 255):  # If the rectangle is blue
+                # Check if the red rectangle is directly below the blue rectangle
+                if abs(red_rect.rect.centerx - blue_rect.rect.centerx) < 10:  # Adjust the threshold as needed
+                    if red_rect.rect.top > blue_rect.rect.bottom:  # Check if red is below blue
+                        # Change the color of the red rectangle to green
+                        red_rect.change_color((0, 255, 0))  # Change to green
+                        print("Changed red to green")
+                    else:
+                        print("No LOS")
+                else:
+                    print("No LOS")
+            blue_rect.rect.y += speed  # Allowing the blue rectangle to move down
+        else:
+            print("Luck you")
+
+
     elif direction == 'left':
         if blue_rect.rect.left > 0:
-            if current_color == (0, 0, 255):
-                print("Duck you")
-                blue_rect.rect.x -= speed
-            else:
-                blue_rect.rect.x -= 0
-                print("Luck you")
+            if current_color == (0, 0, 255):  # If the rectangle is blue
+                # Check if the red rectangle is directly to the left of the blue rectangle
+                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 10:  # Adjust the threshold as needed
+                    if red_rect.rect.right < blue_rect.rect.left:  # Check if red is to the left of blue
+                        # Change the color of the red rectangle to green
+                        red_rect.change_color((0, 255, 0))  # Change to green
+                        print("Changed red to green")
+                    else:
+                        print("No LOS")
+                else:
+                    print("No LOS")
+            blue_rect.rect.x -= speed  # Allowing the blue rectangle to move left
+        else:
+            print("Luck you")
+
     elif direction == 'right':
         if blue_rect.rect.right < screen_width:
-            if current_color == (0, 0, 255):
-                print("Duck you")
-                blue_rect.rect.x += speed
-            else:
-                blue_rect.rect.x += 0
-                print("Luck you")
-
-
-
-
+            if current_color == (0, 0, 255):  # If the rectangle is blue
+                # Check if the red rectangle is directly to the right of the blue rectangle
+                if abs(red_rect.rect.centery - blue_rect.rect.centery) < 10:  # Adjust the threshold to 10 pixels
+                    if red_rect.rect.left > blue_rect.rect.right:  # Check if red is to the right of blue
+                        # Change the color of the red rectangle to green
+                        red_rect.change_color(
+                            (0, 255, 0))  # Change to green
+                        print("Changed red to green")
+                    else:
+                        print("No LOS")
+                else:
+                    print("No LOS")
+            blue_rect.rect.x += speed  # Allowing the blue rectangle to move right
+        else:
+            print("Luck you")
 
             # Your game loop code here (replace this comment with your game loop logic)
 
