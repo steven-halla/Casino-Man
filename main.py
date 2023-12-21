@@ -125,6 +125,11 @@ while running:
                 # If there's a collision, adjust the blue rectangle's position
                 blue_rect.rect.top = pink_rect.rect.bottom
 
+            # Collision logic with red_rect
+            if blue_rect.rect.colliderect(red_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.top = red_rect.rect.bottom
+
             # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly above the blue rectangle
@@ -157,6 +162,11 @@ while running:
                 # If there's a collision, adjust the blue rectangle's position
                 blue_rect.rect.bottom = pink_rect.rect.top
 
+            # Collision logic with red_rect
+            if blue_rect.rect.colliderect(red_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.top = red_rect.rect.bottom
+
             # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly below the blue rectangle
@@ -188,6 +198,11 @@ while running:
                 # If there's a collision, adjust the blue rectangle's position
                 blue_rect.rect.left = pink_rect.rect.right
 
+            # Collision logic with red_rect
+            if blue_rect.rect.colliderect(red_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.top = red_rect.rect.bottom
+
             # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
                 # Check if the red rectangle is directly to the left of the blue rectangle
@@ -215,6 +230,11 @@ while running:
             if blue_rect.rect.colliderect(pink_rect.rect):
                 # If there's a collision, adjust the blue rectangle's position
                 blue_rect.rect.right = pink_rect.rect.left
+
+            # Collision logic with red_rect
+            if blue_rect.rect.colliderect(red_rect.rect):
+                # If there's a collision, adjust the blue rectangle's position
+                blue_rect.rect.top = red_rect.rect.bottom
 
             # Additional logic for interaction with the red rectangle
             if current_color == (0, 0, 255):  # If the rectangle is blue
@@ -250,7 +270,7 @@ while running:
             # Limit the loop's execution speed, e.g., to avoid high CPU usage
 
 
-    blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+    # blue_rect.move(dx, dy, barriers, screen_width, screen_height)
 
     keys = pygame.key.get_pressed()
     game_control.handle_keys(keys)
