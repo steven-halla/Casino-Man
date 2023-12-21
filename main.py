@@ -20,6 +20,15 @@ pygame.display.set_caption("Moving Red Rectangle")
 # Create instances of the Rectangle class
 red_rect = RectangleSprite((255, 0, 0), 100, 50)
 blue_rect = RectangleSprite((0, 0, 255), 100, 50)
+
+
+pink_rect = RectangleSprite((255, 105, 180), 100, 50)  # Pink color, width 100, height 50
+
+
+# Add Pink Square to sprite group
+
+# Add Pink Square to barriers list for collision detection
+barriers = [pink_rect]
 last_move_time = time.time()
 movement_interval = 0.000001  # For example, move every 50 milliseconds (20 times per second)
 
@@ -32,11 +41,16 @@ red_rect.rect.y = (screen_height - red_rect.rect.height) // 2
 blue_rect.rect.x = red_rect.rect.x - blue_rect.rect.width - 40
 blue_rect.rect.y = (screen_height - blue_rect.rect.height) // 2
 
+pink_rect.rect.x = 200  # Set the x position
+pink_rect.rect.y = 300  # Set the y position
+
 
 # Create sprite groups
 all_sprites = pygame.sprite.Group()
 all_sprites.add(red_rect)
 all_sprites.add(blue_rect)
+all_sprites.add(pink_rect)
+
 
 # Speed of movement
 speed = 3
@@ -47,7 +61,7 @@ colors = ["blue", "purple"]
 color_index = 0
 next_color_time = time.time() + 3
 
-game_control = GameControl(red_rect, blue_rect, screen_width, screen_height, speed)
+game_control = GameControl(red_rect, blue_rect, pink_rect, screen_width, screen_height, speed)
 clock = pygame.time.Clock()
 start_time = time.time()  # Get the start time
 directions = ['up', 'down', 'left', 'right']
@@ -56,6 +70,10 @@ current_direction_index = 0  # Start with the first direction in the array
 # Main game loop
 running = True
 while running:
+    barriers = [pink_rect]
+    dx, dy = 0, 0
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -160,7 +178,9 @@ while running:
 
             # Limit the loop's execution speed, e.g., to avoid high CPU usage
 
-        # Check for key presses and delegate to game control
+
+    blue_rect.move(dx, dy, barriers, screen_width, screen_height)
+
     keys = pygame.key.get_pressed()
     game_control.handle_keys(keys)
 
