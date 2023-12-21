@@ -221,7 +221,7 @@ while running:
     elif direction == 'right':
         if blue_rect.rect.right < screen_width:
             dx = speed / 3 # Move right
-            dy = 0  # No vertical movement
+            dy = 0  # No vertical movemente
 
             # Move the blue rectangle
             blue_rect.move(dx, dy, barriers, screen_width, screen_height)
