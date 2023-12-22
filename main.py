@@ -40,11 +40,25 @@ pink_rect.rect.x = (screen_width - red_rect.rect.width) // 2
 pink_rect.rect.y = (screen_height - red_rect.rect.height) // 2
 
 # For blue_rect
-blue_rect.rect.x = red_rect.rect.x - blue_rect.rect.width - 40
-blue_rect.rect.y = (screen_height - blue_rect.rect.height) // 2
+# ... [other code] ...
 
-red_rect.rect.x = 200  # Set the x position
-red_rect.rect.y = 200  # Set the y position
+# Set the blue rectangle's position
+# ... [other code] ...
+
+# Set the blue rectangle's position
+blue_rect.rect.x = 200  # Set the x position for blue rectangle
+blue_rect.rect.y = 700  # Set the y position for blue rectangle
+
+# Set the red rectangle's position to be 80 pixels above the blue rectangle on the same x-axis
+red_rect.rect.x = blue_rect.rect.x
+red_rect.rect.y = blue_rect.rect.y - 222
+
+# ... [rest of your code] ...
+
+
+# ... [rest of your code] ...
+
+
 
 
 # Create sprite groups

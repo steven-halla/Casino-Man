@@ -15,6 +15,8 @@ class BlueRectangleSprite(RectangleSprite):
         self.current_color_index = 0
         self.next_color_change_time = pygame.time.get_ticks() + 3000
 
+        # ... [existing __init__ and other methods] ...
+
     def update(self):
         current_time = pygame.time.get_ticks()
         if current_time >= self.next_color_change_time:
@@ -23,18 +25,23 @@ class BlueRectangleSprite(RectangleSprite):
             self.next_color_change_time = current_time + 3000
 
         current_color = self.image.get_at((0, 0))
-        # Check if the current color is not purple
-        if current_color != (128, 0, 128):  # Purple color
-            dx, dy = 0, 0
-            direction = self.directions[self.current_direction_index]
+        dx, dy = 0, 0
+        direction = self.directions[self.current_direction_index]
+        is_moving = False
+
+        if current_color == (0, 0, 255):  # Check if the rectangle is blue
             if direction == 'up':
                 dy = -self.speed
+                is_moving = True
             elif direction == 'down':
                 dy = self.speed
+                is_moving = True
             elif direction == 'left':
                 dx = -self.speed
+                is_moving = True
             elif direction == 'right':
                 dx = self.speed
+                is_moving = True
 
             self.move(dx, dy, self.barriers, self.screen_width,
                       self.screen_height)
@@ -43,6 +50,32 @@ class BlueRectangleSprite(RectangleSprite):
         for sprite in self.other_sprites:
             if self.rect.colliderect(sprite.rect):
                 self.handle_collision(sprite)
+
+            # Additional proximity-based color change logic, assuming red_rect is the first sprite
+            red_rect = self.other_sprites[0]
+            if sprite == red_rect and is_moving and current_color == (
+            0, 0, 255):  # If moving, blue, and interacting with red_rect
+                if self.check_proximity_and_direction(red_rect, direction):
+                    red_rect.change_color((0, 255, 0))  # Change to green
+
+    def check_proximity_and_direction(self, other_sprite, direction):
+        # Proximity threshold
+        proximity_threshold = 40
+
+        # Check proximity based on direction
+        if direction == 'up' and other_sprite.rect.centery < self.rect.centery:
+            return abs(
+                other_sprite.rect.centerx - self.rect.centerx) < proximity_threshold
+        elif direction == 'down' and other_sprite.rect.centery > self.rect.centery:
+            return abs(
+                other_sprite.rect.centerx - self.rect.centerx) < proximity_threshold
+        elif direction == 'left' and other_sprite.rect.centerx < self.rect.centerx:
+            return abs(
+                other_sprite.rect.centery - self.rect.centery) < proximity_threshold
+        elif direction == 'right' and other_sprite.rect.centerx > self.rect.centerx:
+            return abs(
+                other_sprite.rect.centery - self.rect.centery) < proximity_threshold
+        return False
 
     def change_color_randomly(self):
         self.current_color_index = (self.current_color_index + 1) % len(self.colors)
