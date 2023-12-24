@@ -16,7 +16,8 @@ class BlueRectangleSprite(RectangleSprite):
         self.screen_height = screen_height
         self.other_sprites = other_sprites  # Other sprites for interaction
         self.directions = ['up', 'down', 'left', 'right']
-        self.current_direction_index = 0
+        self.current_direction_index = random.randint(0,
+                                                      len(self.directions) - 1)
         self.colors = [(0, 0, 255), (128, 0, 128)]  # Blue and Purple
         self.current_color_index = 0
         self.next_color_change_time = pygame.time.get_ticks() + 3000
