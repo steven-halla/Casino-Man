@@ -118,6 +118,7 @@ class BlueRectangleSprite(RectangleSprite):
     # For example, check if pink_rect is aligned between self and target_sprite
     # ...
 
+
     def check_proximity_and_direction(self, other_sprite, direction):
         # Fixed proximity threshold
         fixed_proximity_threshold = 240
@@ -125,29 +126,37 @@ class BlueRectangleSprite(RectangleSprite):
         if self.is_los_blocked(other_sprite):
             return False
 
-            # Calculate the horizontal and vertical distances between the center points of the sprites
-        horizontal_distance = abs(self.rect.centerx - other_sprite.rect.centerx)
-        vertical_distance = abs(self.rect.centery - other_sprite.rect.centery)
+        # Calculate the horizontal and vertical distances between the center points of the sprites
+        horizontal_distance = self.rect.centerx - other_sprite.rect.centerx
+        vertical_distance = self.rect.centery - other_sprite.rect.centery
 
-        # Proximity thresholds based on direction
+        # Check proximity thresholds based on direction
         if direction == 'left':
-            proximity_threshold_x = self.rect.width // 2 + fixed_proximity_threshold
-            proximity_threshold_y = self.rect.height // 2
+            if horizontal_distance > 0:
+                return (
+                    abs(horizontal_distance) <= fixed_proximity_threshold
+                    and abs(vertical_distance) <= (self.rect.height // 2)
+                )
         elif direction == 'right':
-            proximity_threshold_x = self.rect.width // 2 + fixed_proximity_threshold
-            proximity_threshold_y = self.rect.height // 2
+            if horizontal_distance < 0:
+                return (
+                    abs(horizontal_distance) <= fixed_proximity_threshold
+                    and abs(vertical_distance) <= (self.rect.height // 2)
+                )
         elif direction == 'up':
-            proximity_threshold_x = self.rect.width // 2
-            proximity_threshold_y = self.rect.height // 2 + fixed_proximity_threshold
+            if vertical_distance > 0:
+                return (
+                    abs(vertical_distance) <= fixed_proximity_threshold
+                    and abs(horizontal_distance) <= (self.rect.width // 2)
+                )
         elif direction == 'down':
-            proximity_threshold_x = self.rect.width // 2
-            proximity_threshold_y = self.rect.height // 2 + fixed_proximity_threshold
+            if vertical_distance < 0:
+                return (
+                    abs(vertical_distance) <= fixed_proximity_threshold
+                    and abs(horizontal_distance) <= (self.rect.width // 2)
+                )
 
-        # Check if the other sprite is within the proximity thresholds
-        return (
-                horizontal_distance <= proximity_threshold_x
-                and vertical_distance <= proximity_threshold_y
-        )
+        return False
 
     def change_color_randomly(self):
         self.current_color_index = (self.current_color_index + 1) % len(self.colors)
