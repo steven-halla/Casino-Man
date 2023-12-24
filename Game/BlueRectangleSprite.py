@@ -29,24 +29,23 @@ class BlueRectangleSprite(RectangleSprite):
         current_time = pygame.time.get_ticks()
         # ... [Other update code] ...
 
+
+
         current_color = self.image.get_at((0, 0))
         direction = self.directions[self.current_direction_index]
         is_moving = False
 
         for sprite in self.other_sprites:
-            if self.is_los_blocked(sprite):
-                # If LOS is blocked, skip proximity check for this sprite
-                continue
-
-            if sprite.rect.colliderect(self.rect):
+            if self.rect.colliderect(sprite.rect):
                 self.handle_collision(sprite)
 
-            # Proximity check only if LOS is not blocked
-            if is_moving and current_color == (
-            0, 0, 255, 255):  # If the rectangle is blue
+            # Proximity check and LOS not blocked
+            if is_moving and current_color == (0, 0, 255):
                 proximity_check = self.check_proximity_and_direction(sprite,
                                                                      direction)
-                if proximity_check:
+                los_blocked = self.is_los_blocked(sprite)
+
+                if proximity_check and not los_blocked:
                     sprite.change_color((0, 255, 0))  #
 
 
@@ -120,28 +119,35 @@ class BlueRectangleSprite(RectangleSprite):
     # ...
 
     def check_proximity_and_direction(self, other_sprite, direction):
-        # Proximity threshold
-        proximity_threshold = 140
+        # Fixed proximity threshold
+        fixed_proximity_threshold = 240
 
-        # First, check if LOS to the other_sprite is blocked
         if self.is_los_blocked(other_sprite):
-            return False  # LOS is blocked, so proximity is not considered
+            return False
 
-        # Calculate the horizontal and vertical distances between the edges of the two sprites
-        if direction == 'up':
-            proximity = self.rect.top - other_sprite.rect.bottom
-            return proximity >= 0 and proximity < proximity_threshold
-        elif direction == 'down':
-            proximity = other_sprite.rect.top - self.rect.bottom
-            return proximity >= 0 and proximity < proximity_threshold
-        elif direction == 'left':
-            proximity = self.rect.left - other_sprite.rect.right
-            return proximity >= 0 and proximity < proximity_threshold
+            # Calculate the horizontal and vertical distances between the center points of the sprites
+        horizontal_distance = abs(self.rect.centerx - other_sprite.rect.centerx)
+        vertical_distance = abs(self.rect.centery - other_sprite.rect.centery)
+
+        # Proximity thresholds based on direction
+        if direction == 'left':
+            proximity_threshold_x = self.rect.width // 2 + fixed_proximity_threshold
+            proximity_threshold_y = self.rect.height // 2
         elif direction == 'right':
-            proximity = other_sprite.rect.left - self.rect.right
-            return proximity >= 0 and proximity < proximity_threshold
+            proximity_threshold_x = self.rect.width // 2 + fixed_proximity_threshold
+            proximity_threshold_y = self.rect.height // 2
+        elif direction == 'up':
+            proximity_threshold_x = self.rect.width // 2
+            proximity_threshold_y = self.rect.height // 2 + fixed_proximity_threshold
+        elif direction == 'down':
+            proximity_threshold_x = self.rect.width // 2
+            proximity_threshold_y = self.rect.height // 2 + fixed_proximity_threshold
 
-        return False
+        # Check if the other sprite is within the proximity thresholds
+        return (
+                horizontal_distance <= proximity_threshold_x
+                and vertical_distance <= proximity_threshold_y
+        )
 
     def change_color_randomly(self):
         self.current_color_index = (self.current_color_index + 1) % len(self.colors)

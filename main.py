@@ -71,19 +71,30 @@ movement_interval = 0.000001  # For example, move every 50 milliseconds (20 time
 # For red_rect
 # ... [previous code] ...
 
-# Center the pink rectangle in the middle of the screen
+#this is for testing the blue and red rect taking the pink out of the way
+# pink_rect.rect.x = 0  # Left corner
+# pink_rect.rect.y = screen_height - pink_rect.rect.height  # Bottom of the screen
+#
+# # Position the blue rectangle halfway in both x and y coordinates
+# blue_rect.rect.x = (screen_width - blue_rect.rect.width) // 2  # Halfway in x
+# blue_rect.rect.y = (screen_height - blue_rect.rect.height) // 2  # Halfway in y
+#
+# # Position the red rectangle 40 pixels up and 40 pixels to the right of the blue rectangle
+# red_rect.rect.x = blue_rect.rect.x + 120  # 40 pixels to the right of blue_rect
+# red_rect.rect.y = blue_rect.rect.y - red_rect.rect.height - 220  # 40 pixels up from blue_rect
+
+
+# ... [rest of your code] ...
 pink_rect.rect.x = (screen_width - pink_rect.rect.width) // 2
 pink_rect.rect.y = (screen_height - pink_rect.rect.height) // 2
 
 # Position the red rectangle 20 pixels above the pink rectangle
-red_rect.rect.x = pink_rect.rect.x + 50 # Align horizontally with the pink rectangle
+red_rect.rect.x = pink_rect.rect.x + 10 # Align horizontally with the pink rectangle
 red_rect.rect.y = pink_rect.rect.y - red_rect.rect.height - 20
 
 # Position the blue rectangle 20 pixels below the pink rectangle
 blue_rect.rect.x = pink_rect.rect.x  # Align horizontally with the pink rectangle
 blue_rect.rect.y = pink_rect.rect.y + pink_rect.rect.height + 20
-
-# ... [rest of your code] ...
 
 
 # ... [rest of your code] ...
