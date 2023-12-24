@@ -36,22 +36,22 @@ movement_interval = 0.000001  # For example, move every 50 milliseconds (20 time
 
 # Set initial positions
 # For red_rect
-pink_rect.rect.x = (screen_width - red_rect.rect.width) // 2
-pink_rect.rect.y = (screen_height - red_rect.rect.height) // 2
+# ... [previous code] ...
 
-# For blue_rect
-# ... [other code] ...
+# Center the pink rectangle in the middle of the screen
+pink_rect.rect.x = (screen_width - pink_rect.rect.width) // 2
+pink_rect.rect.y = (screen_height - pink_rect.rect.height) // 2
 
-# Set the blue rectangle's position
-# ... [other code] ...
+# Position the red rectangle 20 pixels above the pink rectangle
+red_rect.rect.x = pink_rect.rect.x + 50 # Align horizontally with the pink rectangle
+red_rect.rect.y = pink_rect.rect.y - red_rect.rect.height - 20
 
-# Set the blue rectangle's position
-blue_rect.rect.x = 200  # Set the x position for blue rectangle
-blue_rect.rect.y = 700  # Set the y position for blue rectangle
+# Position the blue rectangle 20 pixels below the pink rectangle
+blue_rect.rect.x = pink_rect.rect.x  # Align horizontally with the pink rectangle
+blue_rect.rect.y = pink_rect.rect.y + pink_rect.rect.height + 20
 
-# Set the red rectangle's position to be 80 pixels above the blue rectangle on the same x-axis
-red_rect.rect.x = blue_rect.rect.x
-red_rect.rect.y = blue_rect.rect.y - 222
+# ... [rest of your code] ...
+
 
 # ... [rest of your code] ...
 
