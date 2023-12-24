@@ -1,4 +1,6 @@
 import pygame
+
+from Game.PinkRectangleSprite import PinkRectangleSprite
 from Game.rectanglesprite import RectangleSprite
 from Game.BlueRectangleSprite import BlueRectangleSprite
 import random
@@ -20,9 +22,40 @@ pygame.display.set_caption("Moving Red Rectangle")
 
 # Create instances of the Rectangle class
 red_rect = RectangleSprite((255, 0, 0), 100, 50)
-pink_rect = RectangleSprite((255, 105, 180), 100, 50)  # Pink color, width 100, height 50
+# pink_rect = RectangleSprite((255, 105, 180), 100, 50)  # Pink color, width 100, height 50
 
-blue_rect = BlueRectangleSprite((0, 0, 255), 100, 50, speed=3, barriers=[pink_rect], screen_width=screen_width, screen_height=screen_height, other_sprites=[red_rect, pink_rect])
+# blue_rect = BlueRectangleSprite((0, 0, 255), 100, 50, speed=3, barriers=[pink_rect], screen_width=screen_width, screen_height=screen_height, other_sprites=[red_rect, pink_rect])
+# Create the pink rectangle instance before the blue rectangle
+# pink_rect = PinkRectangleSprite(pink_width, pink_height, pink_color, pink_speed)
+# Define the properties for the PinkRectangleSprite
+pink_color = (255, 20, 147)  # RGB color for pink
+
+# Create an instance of PinkRectangleSprite
+pink_rect = PinkRectangleSprite(
+    width=100,  # Width of the blue rectangle
+    height=50,
+    color=pink_color,
+)
+
+# Now create the blue rectangle and pass the pink rectangle to it
+# Assuming the necessary variables are already defined and initialized:
+# pink_rect = instance of PinkRectangleSprite
+# red_rect = instance of another sprite class
+# screen_width = width of your game screen
+# screen_height = height of your game screen
+
+# Now create the blue rectangle
+blue_rect = BlueRectangleSprite(
+    color=(0, 0, 255),  # Blue color
+    width=100,          # Width of the blue rectangle
+    height=50,          # Height of the blue rectangle
+    speed=3,            # Speed of the blue rectangle
+    barriers=[pink_rect],  # List containing the pink rectangle as a barrier
+    screen_width=screen_width,  # Screen width
+    screen_height=screen_height, # Screen height
+    other_sprites=[red_rect, pink_rect],  # List containing red and pink rectangles as other sprites
+    pink_rect=pink_rect  # Pink rectangle for LOS blocking
+)
 
 
 

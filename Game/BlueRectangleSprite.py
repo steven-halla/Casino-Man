@@ -2,9 +2,15 @@ import pygame
 from .rectanglesprite import RectangleSprite
 import random
 
+
+
 class BlueRectangleSprite(RectangleSprite):
-    def __init__(self, color, width, height, speed=5, barriers=None, screen_width=0, screen_height=0, other_sprites=None):
+    def __init__(self, color, width, height, speed=5, barriers=None,
+                 screen_width=0, screen_height=0, other_sprites=None,
+                 pink_rect=None):
         super().__init__(color, width, height, speed)
+        self.pink_rect = pink_rect
+
         self.barriers = barriers
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -15,9 +21,33 @@ class BlueRectangleSprite(RectangleSprite):
         self.current_color_index = 0
         self.next_color_change_time = pygame.time.get_ticks() + 3000
 
+
         # ... [existing __init__ and other methods] ...
 
     def update(self):
+
+        current_time = pygame.time.get_ticks()
+        # ... [Other update code] ...
+
+        current_color = self.image.get_at((0, 0))
+        direction = self.directions[self.current_direction_index]
+        is_moving = False
+
+        for sprite in self.other_sprites:
+            if self.is_los_blocked(sprite):
+                # If LOS is blocked, skip proximity check for this sprite
+                continue
+
+            if sprite.rect.colliderect(self.rect):
+                self.handle_collision(sprite)
+
+            # Proximity check only if LOS is not blocked
+            if is_moving and current_color == (
+            0, 0, 255, 255):  # If the rectangle is blue
+                proximity_check = self.check_proximity_and_direction(sprite,
+                                                                     direction)
+                if proximity_check:
+                    sprite.change_color((0, 255, 0))  #
 
 
         current_time = pygame.time.get_ticks()
@@ -67,9 +97,35 @@ class BlueRectangleSprite(RectangleSprite):
                     red_rect.change_color(
                         (0, 255, 0))  # Change to green
 
+    def is_los_blocked(self, target_sprite):
+        if self.pink_rect is None or not self.pink_rect.can_block_los:
+            return False
+
+        los_vector = pygame.math.Vector2(
+            target_sprite.rect.centerx - self.rect.centerx,
+            target_sprite.rect.centery - self.rect.centery)
+
+        for step in range(1, 100):
+            check_point = self.rect.center + los_vector * (step / 100.0)
+
+            if self.pink_rect.rect.collidepoint(check_point.x, check_point.y):
+                print("LOS is blocked at point:", check_point)
+                return True
+
+        return False
+
+    # Logic to determine if the line of sight to target_sprite is blocked by the pink rectangle
+    # This can be basic or complex depending on your game's requirements
+    # For example, check if pink_rect is aligned between self and target_sprite
+    # ...
+
     def check_proximity_and_direction(self, other_sprite, direction):
         # Proximity threshold
         proximity_threshold = 140
+
+        # First, check if LOS to the other_sprite is blocked
+        if self.is_los_blocked(other_sprite):
+            return False  # LOS is blocked, so proximity is not considered
 
         # Calculate the horizontal and vertical distances between the edges of the two sprites
         if direction == 'up':
@@ -84,8 +140,6 @@ class BlueRectangleSprite(RectangleSprite):
         elif direction == 'right':
             proximity = other_sprite.rect.left - self.rect.right
             return proximity >= 0 and proximity < proximity_threshold
-
-        return False
 
         return False
 
