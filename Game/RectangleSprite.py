@@ -15,6 +15,8 @@ class RectangleSprite(pygame.sprite.Sprite):
         self.speed = speed  #
         self.stop_speed = 0  # New stop_speed attribute
 
+
+
     def move(self, dx, dy, barriers, screen_width, screen_height):
         # Move each axis separately and check for collisions
         self.rect.x += dx

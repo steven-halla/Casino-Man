@@ -1,9 +1,9 @@
 import pygame
 
-from Game.rectanglesprite import RectangleSprite
+from Game.RectangleSprite import RectangleSprite
 
 
-class PinkRectangleSprite(RectangleSprite):
+class ObstacleRectangle(RectangleSprite):
     def __init__(self, width, height, color=(255, 20, 147), speed=5,
                  can_block_los=True):
         super().__init__(color, width, height, speed)

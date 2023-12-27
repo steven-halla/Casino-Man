@@ -1,10 +1,10 @@
 import pygame
-from .rectanglesprite import RectangleSprite
+from .RectangleSprite import RectangleSprite
 import random
 
 
 
-class BlueRectangleSprite(RectangleSprite):
+class DemonRectangle(RectangleSprite):
     def __init__(self, color, width, height, speed=5, barriers=None,
                  screen_width=0, screen_height=0, other_sprites=None,
                  pink_rect=None):
@@ -96,6 +96,8 @@ class BlueRectangleSprite(RectangleSprite):
                 if proximity_check:
                     red_rect.change_color(
                         (0, 255, 0))  # Change to green
+
+
 
     def is_los_blocked(self, target_sprite):
         if self.pink_rect is None or not self.pink_rect.can_block_los:
